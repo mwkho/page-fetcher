@@ -1,22 +1,14 @@
 const request = require('request');
 const fs = require('fs');
 
-// get the arguments and check for validity
-let args = process.argv;
-let argLength = args.length;
+const URL = process.argv[2];
+const FILENAME = process.argv[3];
 
-let main = () => {
-  if (argLength !== 4) {
-    console.log("Usage: node fetcher.js URL FILENAME");
-    return;
-  }
-
-  let URL = args[2];
-  let FILENAME = args[3];
-
+const fetcher = (URL, FILENAME) => {
   request(URL, (error, response, body) => {
     if (error) {
-      console.log('Error:', error);
+      console.log('URL provided failed to download');
+      console.log("ERROR MESSAGE:\n", error);
       return;
     }
     
@@ -30,5 +22,8 @@ let main = () => {
   });
 };
 
-main();
-
+if (!URL || !FILENAME) {
+  console.log("Please pass in two valid parameters");
+} else {
+  fetcher(URL, FILENAME);
+}
